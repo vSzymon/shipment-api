@@ -1,31 +1,32 @@
 ﻿using shipment_api.Domain.Exceptions;
 using System;
-
+using System.Text.RegularExpressions;
+using ValueOf;
 namespace shipment_api.Domain.ValueObjects
 {
-    public record EmailAddress
+    public class EmailAddress : ValueOf<string, EmailAddress>
     {
-        public string Name { get; init; }
-        public string Domain { get; init; }
-
-        public static EmailAddress For(string emailAddress) 
+        protected override void Validate()
         {
             try
             {
-                var name = emailAddress.Substring(0, emailAddress.IndexOf('@'));
-                var domain = emailAddress[(emailAddress.IndexOf('@') + 1)..];
+                var regex = new Regex(@"^([a-zA-Z0-9_\-\.]+)@
+               ((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$",
+                RegexOptions.CultureInvariant | RegexOptions.Singleline);
 
-                return new EmailAddress
+                if (regex.IsMatch(Value) == false) 
                 {
-                    Name = name,
-                    Domain = domain
-                };
+                    throw new InvalidEmailAddressException(Value);
+                }
             }
-            catch (Exception ex)
+            catch (ArgumentNullException)
             {
-                throw new InvalidEmailAddressException("Email address is in invalid format", ex);
+                throw new InvalidEmailAddressException(Value);
             }
-           
+            catch (RegexMatchTimeoutException) 
+            {
+                throw new InvalidEmailAddressException(Value);
+            }
         }
     }
 }
