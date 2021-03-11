@@ -7,17 +7,8 @@ namespace shipment_api.Domain.Exceptions
 {
     public class InvalidEmailAddressException : Exception
     {
-        public InvalidEmailAddressException() : base()
-        {
-
-        }
-        public InvalidEmailAddressException(string message) : base(message)
-        {
-
-        }
-        public InvalidEmailAddressException(string message, Exception innerException) : base(message, innerException)
-        {
-
-        }
+        public InvalidEmailAddressException(string emailAddress)
+            : base($"Email address is in invalid format, current value: {emailAddress}") { }
+        
     }
 }
