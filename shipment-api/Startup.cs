@@ -1,10 +1,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using shipment_api.Infrastructure.Persistance;
 
 namespace shipment_api
 {
@@ -23,6 +25,8 @@ namespace shipment_api
 
             services.AddControllers();
             services.AddMediatR(typeof(Startup));
+            services.AddDbContext<ShipContext>(options => 
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "shipment_api", Version = "v1" });
