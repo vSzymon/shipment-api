@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace shipment_api.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public abstract class ApiController : ControllerBase
     {
