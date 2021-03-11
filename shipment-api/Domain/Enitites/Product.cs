@@ -1,4 +1,6 @@
 ﻿using shipment_api.Domain.Enums;
+using shipment_api.Domain.ValueObjects;
+using System.Collections.Generic;
 
 namespace shipment_api.Domain.Enitites
 {
@@ -6,8 +8,7 @@ namespace shipment_api.Domain.Enitites
     {
         public string Id { get; init; }
         public string Name { get; init; }
-        public decimal Quantity { get; init; }
-        public decimal Weight { get; init; }
-        public WeightUnit WeightUnit { get; init; }
+        public Weight TotalWeight { get; init; }
+        public ICollection<Package> Products { get; } = new HashSet<Package>();
     }
 }
