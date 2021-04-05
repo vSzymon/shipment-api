@@ -23,11 +23,11 @@ namespace shipment_api.Domain.ValueObjects
             }
             catch (ArgumentNullException)
             {
-                throw new InvalidEmailAddressException(Value);
+                throw new InvalidZipCodeException(Value);
             }
             catch (RegexMatchTimeoutException)
             {
-                throw new InvalidEmailAddressException(Value);
+                throw new InvalidZipCodeException(Value);
             }
         }
     }
