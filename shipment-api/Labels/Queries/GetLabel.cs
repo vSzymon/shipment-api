@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
+using shipment_api.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +19,21 @@ namespace shipment_api.Labels.Queries
     }
     public class GetLabelQueryHandler : IRequestHandler<GetLabelQuery, LabelViewModel>
     {
-        public Task<LabelViewModel> Handle(GetLabelQuery request, CancellationToken cancellationToken)
+        private readonly IShipContext context;
+        private readonly IMapper mapper;
+
+        public GetLabelQueryHandler(IShipContext context, IMapper mapper)
         {
-            throw new NotImplementedException();
+            this.context = context;
+            this.mapper = mapper;
+        }
+        public async Task<LabelViewModel> Handle(GetLabelQuery request, CancellationToken cancellationToken)
+        {
+            var labelEntity = await context
+                .Labels
+                .FindAsync(request.TrackingNumber);
+
+            return mapper.Map<LabelViewModel>(labelEntity);
         }
     }
 }
